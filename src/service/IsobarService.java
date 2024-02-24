@@ -1,16 +1,16 @@
 package service;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import model.Album;
 import model.Band;
 
-import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IsobarService {
 
@@ -37,6 +37,42 @@ public class IsobarService {
                         return bandReturn;
                     }
                 }
+            }
+
+            throw new RuntimeException("An error has happened - CODE:"+ httpConnection.getResponseCode());
+
+        } catch (Exception e){
+            throw new Exception("An error has happened: "+ e);
+        }
+    }
+
+    public static List<Album> findAlbumByBand(String band) throws Exception {
+        try {
+            URL url = new URL(isobarWSBands);
+            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            BufferedReader response = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
+            String parseJson = jsonToString(response);
+
+            if(httpConnection.getResponseCode() == 200){
+
+                JsonArray jsonArray = JsonParser.parseString(parseJson).getAsJsonArray();
+                List<Album> albumsReturnList = new ArrayList<>();
+
+                for (JsonElement json: jsonArray) {
+                    if (json.isJsonObject()) {
+                        JsonArray jsonObjectArray = json.getAsJsonObject().get("albums").getAsJsonArray();
+
+                        Gson gson = new Gson();
+                        for (JsonElement jsonObjectOne : jsonObjectArray) {
+                            Album albumsReturn = gson.fromJson(jsonObjectOne, Album.class);
+
+                            if (albumsReturn.getBand().toUpperCase().equals(band.toUpperCase())) {
+                                albumsReturnList.add(albumsReturn);
+                            }
+                        }
+                    }
+                }
+                return albumsReturnList;
             }
 
             throw new RuntimeException("An error has happened - CODE:"+ httpConnection.getResponseCode());

@@ -7,8 +7,17 @@ public class Album {
     String name;
     String imagePath;
     Date releasedDate;
-    Band band;
+    String band;
     List<Track> tracks;
+    String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -22,7 +31,7 @@ public class Album {
         return releasedDate;
     }
 
-    public Band getBand() {
+    public String getBand() {
         return band;
     }
 
@@ -42,7 +51,7 @@ public class Album {
         this.releasedDate = releasedDate;
     }
 
-    public void setBand(Band band) {
+    public void setBand(String band) {
         this.band = band;
     }
 
