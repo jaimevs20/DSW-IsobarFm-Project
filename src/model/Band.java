@@ -9,7 +9,6 @@ public class Band {
     String biography;
     Long numPlays;
     String id;
-    List<Album> albums;
 
     public String getName() {
         return name;
@@ -33,10 +32,6 @@ public class Band {
 
     public String getId() {
         return id;
-    }
-
-    public List<Album> getAlbums() {
-        return albums;
     }
 
     public void setName(String name) {
@@ -63,7 +58,15 @@ public class Band {
         this.id = id;
     }
 
-    public void setAlbums(List<Album> albums) {
-        this.albums = albums;
+    @Override
+    public String toString() {
+        return "Band{" +
+                "name='" + name + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", genre='" + genre + '\'' +
+                ", biography='" + biography + '\'' +
+                ", numPlays=" + numPlays +
+                ", id='" + id + '\'' +
+                '}';
     }
 }
